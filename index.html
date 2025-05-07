@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caso de estudio 2: Reservas en un vuelo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="logo"><i class="fas fa-plane"></i>Construcción de algoritmos</div>
+                <div class="nav-links">
+                    <a href="#sistema">Sistema</a>
+                    <a href="#pasajero">Pasajero</a>
+                    <a href="#silla">Silla</a>
+                </div>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+        <div class="hero">
+            <h1>Caso de estudio 2: Reservas en un vuelo</h1>
+            <p class="subtitle">Requerimientos, diagrama de clases y código.</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Tarjeta de datos personales que se insertará después de la sección hero -->
+<section class="author-section">
+    <div class="container">
+        <div class="author-card">
+            <div class="author-header">
+                <i class="fas fa-user-graduate"></i>
+                <h3>Información del estudiante</h3>
+            </div>
+            <div class="author-info">
+                <div class="info-item">
+                    <span class="info-label">Nombre:</span>
+                    <span class="info-value">Nicolas Alejandro Diaz Acosta</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Código ID:</span>
+                    <span class="info-value">928955</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Universidad:</span>
+                    <span class="info-value">Universidad Cooperativa de Colombia</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Programa:</span>
+                    <span class="info-value">Ingeniería de Software</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Estilos adicionales para la tarjeta de autor que se agregarán al CSS -->
+        <section id="sistema" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Visión General</span>
+                    <h2>Comprensión del Sistema</h2>
+                </div>
+                <div class="content">
+                    <p>Este proyecto implementa un sistema de gestión para un avión de aerolínea con 50 sillas: 8 de clase ejecutiva y 42 de clase económica. El sistema permite asignar pasajeros a sillas según sus preferencias de ubicación, manteniendo un registro ordenado de las asignaciones.</p>
+                    
+                    <div class="info-card">
+                        <div class="card-header">
+                            <i class="fas fa-info-circle"></i>
+                            <h3>Entidades Principales</h3>
+                        </div>
+                        <ul>
+                            <li><strong>Pasajero:</strong> Contiene información personal del viajero</li>
+                            <li><strong>Silla:</strong> Representa una silla en el avión con propiedades específicas</li>
+                            <li><strong>Avión:</strong> Gestiona el conjunto de sillas y operaciones de asignación</li>
+                        </ul>
+                    </div>
+
+                    <div class="image-container">
+                        <img src="https://via.placeholder.com/800x400" alt="Diagrama UML del Sistema" class="responsive-image">
+                        <p class="image-caption">Diagrama UML del sistema que muestra las relaciones entre clases</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+                <!-- Corrección para la sección de requerimientos -->
+        <!-- Sección de requerimientos actualizada con variables -->
+        <section id="requerimientos" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Requerimientos</span>
+                    <h2>Requerimientos funcionales</h2>
+                </div>
+                
+                <div class="content">
+                    <!-- Requisito R1 -->
+                    <h3>Requisito R1: Asignar una silla a un pasajero</h3>
+                    <table class="req-table">
+                        <tr>
+                            <th>Resumen</th>
+                            <td>Se requiere asignar una silla según las preferencias del pasajero, estas son clase ejecutiva o económica, y ubicación: ventana, centro o pasillo. En la asignación se debe registrar los datos del pasajero.</td>
+                        </tr>
+                        <tr>
+                            <th>Entradas</th>
+                            <td>pNombre, pCedula, pClase, pUbicacion</td>
+                        </tr>
+                        <tr>
+                            <th>Resultados</th>
+                            <td>Boolean</td>
+                        </tr>
+                    </table>
+        
+                    <!-- Requisito R2 -->
+                    <h3>Requisito R2: Desasignar una silla a un pasajero</h3>
+                    <table class="req-table">
+                        <tr>
+                            <th>Resumen</th>
+                            <td>Dada la cédula de un pasajero se elimina su reservación de silla.</td>
+                        </tr>
+                        <tr>
+                            <th>Entradas</th>
+                            <td>pCedula</td>
+                        </tr>
+                        <tr>
+                            <th>Resultados</th>
+                            <td>Boolean</td>
+                        </tr>
+                    </table>
+        
+                    <!-- Requisito R3 -->
+                    <h3>Requisito R3: Dar los datos de reserva de un pasajero</h3>
+                    <table class="req-table">
+                        <tr>
+                            <th>Resumen</th>
+                            <td>Dada la cédula de un pasajero, si éste tiene reserva se presentan los datos de su reservación.</td>
+                        </tr>
+                        <tr>
+                            <th>Entradas</th>
+                            <td>pCedula</td>
+                        </tr>
+                        <tr>
+                            <th>Resultados</th>
+                            <td>pNombre, pCedula, pNumero, pClase, pUbicacion</td>
+                        </tr>
+                    </table>
+        
+                    <!-- Requisito R4 -->
+                    <h3>Requisito R4: Dar el porcentaje de ocupación del avión</h3>
+                    <table class="req-table">
+                        <tr>
+                            <th>Resumen</th>
+                            <td>A partir del número de sillas asignadas versus el número de sillas disponibles en el avión, presentar el porcentaje de ocupación del avión.</td>
+                        </tr>
+                        <tr>
+                            <th>Entradas</th>
+                            <td>Ninguna</td>
+                        </tr>
+                        <tr>
+                            <th>Resultados</th>
+                            <td>porcentajeOcupacion</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+    
+        <section id="pasajero" class="section alternate">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Clase</span>
+                    <h2>Pasajero</h2>
+                </div>
+                <div class="content">
+                    <p>La clase Pasajero representa a una persona que viajará en el avión. Almacena información básica como la cédula y el nombre del pasajero.</p>
+                    
+                    <h3>Implementación</h3>
+                    <p>La implementación de esta clase es sencilla, con atributos privados y métodos para acceder a ellos:</p>
+                    
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="language-tag">Python</span>
+                            <span class="filename">pasajero.py</span>
+                        </div>
+                        <pre><code class="language-python">class Pasajero:
+    #---------------------------
+    # Atributos
+    #---------------------------
+    def __init__(self, pCedula, pNombre):
+        """
+        Constructor de la clase Pasajero
+        Parámetros:
+        pCedula: Cédula del pasajero (tipo: long/int)
+        pNombre: Nombre del pasajero (tipo: string)
+        """
+        self.__cedula = pCedula
+        self.__nombre = pNombre
+    
+    #---------------------------
+    # Métodos
+    #---------------------------
+    def darCedula(self):
+        """
+        Retorna la cédula del pasajero
+        Returns: La cédula del pasajero
+        """
+        return self.__cedula
+    
+    def darNombre(self):
+        """
+        Retorna el nombre del pasajero
+        Returns: El nombre del pasajero
+        """
+        return self.__nombre</code></pre>
+                    </div>
+                    
+                    <div class="explanation-card">
+                        <h3>Cosas a tener en cuenta</h3>
+                        <ul>
+                            <li>Utiliza el doble guión bajo (<code>__</code>) para hacer los atributos privados</li>
+                            <li>Implementa los métodos métodos solicitados: <code>darCedula()</code> y <code>darNombre()</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="silla" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Clase</span>
+                    <h2>Silla</h2>
+                </div>
+                <div class="content">
+                    <p>La clase Silla representa las sillas disponibles en el avión. Cada silla tiene propiedades como su número, clase (ejecutiva o económica), ubicación (ventana, centro o pasillo) y una referencia al pasajero asignado, si existe.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-tags"></i>
+                            <h4>Enumeraciones</h4>
+                            <p>Define tipos de clase y ubicación usando enumeraciones para mayor claridad y mantenibilidad</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-user-check"></i>
+                            <h4>Asignación</h4>
+                            <p>Permite asignar y desasignar pasajeros manteniendo la integridad del sistema</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-info-circle"></i>
+                            <h4>Estado</h4>
+                            <p>Proporciona métodos para consultar el estado actual de la silla</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Implementación</h3>
+                    <p>Esta clase es más compleja y utiliza enumeraciones para definir los tipos de clase y ubicaciones posibles:</p>
+                    
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="language-tag">Python</span>
+                            <span class="filename">silla.py</span>
+                        </div>
+                        <pre><code class="language-python">from enum import Enum
+
+class Silla:
+    #------------------------------------------
+    # Enumeraciones
+    #------------------------------------------
+    """
+    * Enumeradores para las clases de silla.
+    """
+    class Clase(Enum):
+        """
+        * Representa la clase ejecutiva.
+        """
+        EJECUTIVA = 1
+        
+        """
+        * Representa la clase económica.
+        """
+        ECONOMICA = 2
+    
+    """
+    * Enumeradores para las ubicaciones de las sillas.
+    """
+    class Ubicacion(Enum):
+        """
+        * Representa la ubicación ventana.
+        """
+        VENTANA = 1
+        
+        """
+        * Representa la ubicación centro.
+        """
+        CENTRO = 2
+        
+        """
+        * Representa la ubicación pasillo.
+        """
+        PASILLO = 3
+    
+    #------------------------------------------
+    # Atributos
+    #------------------------------------------
+    
+    def __init__(self, pNumero, pClase, pUbicacion):
+        """
+        Constructor de la clase Silla
+        Parámetros:
+        pNumero: Número de la silla (tipo: int)
+        pClase: Clase de la silla (tipo: Clase)
+        pUbicacion: Ubicación de la silla (tipo: Ubicacion)
+        """
+        self.__numero = pNumero
+        self.__clase = pClase
+        self.__ubicacion = pUbicacion
+        self.__pasajero = None
+    
+    def asignarPasajero(self, pPasajero):
+        """
+        Asigna la silla al pasajero "pPasajero".
+        Parámetros:
+        pPasajero: El pasajero a asignar (tipo: Pasajero)
+        """
+        self.__pasajero = pPasajero
+    
+    def desasignarSilla(self):
+        """
+        Quita al pasajero que se encuentra en la silla, dejándola desocupada.
+        """
+        self.__pasajero = None
+    
+    def sillaAsignada(self):
+        """
+        Informa si la silla está ocupada.
+        Returns: True si la silla está ocupada, False en caso contrario
+        """
+        return self.__pasajero is not None
+    
+    def darNumero(self):
+        """
+        Retorna el número de la silla
+        Returns: El número de la silla
+        """
+        return self.__numero</code></pre>
+                    </div>
+                    
+                    <div class="explanation-card">
+                        <h3>Aspectos destacados</h3>
+                        <ul>
+                            <li>Utiliza <code>enum.Enum</code> para crear enumeraciones tipo Java en Python</li>
+                            <li>Mantiene atributos privados para encapsular el estado interno</li>
+                            <li>Proporciona métodos específicos para la asignación y desasignación de pasajeros</li>
+                            <li>El constructor inicializa <code>__pasajero</code> como <code>None</code> para representar una silla vacía</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="section">
+            <div class="container">
+                    <div class="cta-container">
+                        <a href="https://github.com/NicoalsD/ReservaVuelo" target="_blank" class="cta-button">Github del proyecto</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>¿Que más profe?.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle mobile menu
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Highlight active section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
