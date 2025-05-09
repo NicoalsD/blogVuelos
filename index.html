@@ -365,7 +365,196 @@ class Silla:
                 </div>
             </div>
         </section>
+        <section id="avion" class="section alternate">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Clase</span>
+            <h2>Avión</h2>
+        </div>
+        <div class="content">
+            <p>La clase Avión es el componente principal que gestiona las sillas y las operaciones de reserva en el sistema. Contiene una colección de sillas organizadas según su clase (ejecutiva o económica) y ubicación (ventana, centro, pasillo), y proporciona métodos para la gestión de reservas.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-plane"></i>
+                    <h4>Configuración</h4>
+                    <p>Inicializa un avión con 50 sillas: 8 ejecutivas y 42 económicas, organizadas según ubicaciones específicas</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h4>Búsqueda</h4>
+                    <p>Proporciona métodos para buscar sillas disponibles según criterios específicos</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-cogs"></i>
+                    <h4>Gestión</h4>
+                    <p>Implementa funcionalidades de asignación, anulación y consulta de reservas</p>
+                </div>
+            </div>
+            
+            <h3>Implementación</h3>
+            <p>Esta clase coordina la gestión de todas las sillas y sus reservas, implementando métodos específicos para cada requerimiento:</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="language-tag">Python</span>
+                    <span class="filename">avion.py</span>
+                </div>
+                <pre><code class="language-python">from Silla import Silla
+from Pasajero import Pasajero
 
+class Avion:
+    #------------------------------------------
+    # Atributos
+    #------------------------------------------
+    def __init__(self):
+        # Crear la matriz de sillas
+        self.__sillas = []
+        
+        for i in range(1, 9):
+            # Definir ubicación:
+            # - Ventana: sillas 1, 4, 5, 8
+            # - Pasillo: sillas 2, 3, 6, 7
+            if i in [1, 4, 5, 8]:
+                ubicacion = Silla.Ubicacion.VENTANA
+            else:
+                ubicacion = Silla.Ubicacion.PASILLO
+            
+            self.__sillas.append(Silla(i, Silla.Clase.EJECUTIVA, ubicacion))
+        
+        # Crear sillas económicas (9-50)
+        # 7 filas con 6 sillas cada una (2 ventanas, 2 centros, 2 pasillos por fila)
+        for i in range(9, 51):
+            posicion = (i - 9) % 6 + 1
+                        
+            if posicion in [1, 6]:
+                ubicacion = Silla.Ubicacion.VENTANA
+            elif posicion in [2, 5]:
+                ubicacion = Silla.Ubicacion.CENTRO
+            else:  # posiciones 3 y 4
+                ubicacion = Silla.Ubicacion.PASILLO
+            
+            self.__sillas.append(Silla(i, Silla.Clase.ECONOMICA, ubicacion))
+    
+    #------------------------------------------
+    # Métodos del Taller clase 2
+    #------------------------------------------
+    
+    # 1. Contar sillas ejecutivas ocupadas
+    def contarSillasEjecutivasOcupadas(self):
+        contador = 0
+        for i in range(8):
+            if self.__sillas[i].sillaAsignada():
+                contador += 1
+        return contador
+    
+    # 2. Buscar pasajero ejecutivo por cédula
+    def buscarPasajeroEjecutivo(self, pCedula):
+        for i in range(8):
+            silla = self.__sillas[i]
+            if silla.sillaAsignada() and silla.darPasajero().darCedula() == pCedula:
+                return silla
+        return None
+    
+    # 3. Buscar silla económica libre según ubicación
+    def buscarSillaEconomicaLibre(self, pUbicacion):
+        for i in range(8, len(self.__sillas)):
+            silla = self.__sillas[i]
+            if not silla.sillaAsignada() and silla.darUbicacion() == pUbicacion:
+                return silla
+        return None
+    
+    # 4. Asignar silla económica
+    def asignarSillaEconomica(self, pUbicacion, pPasajero):
+        silla = self.buscarSillaEconomicaLibre(pUbicacion)
+        if silla is not None:
+            silla.asignarPasajero(pPasajero)
+            return True
+        return False
+    
+    # 5. Anular reserva ejecutivo
+    def anularReservaEjecutivo(self, pCedula):
+        silla = self.buscarPasajeroEjecutivo(pCedula)
+        if silla is not None:
+            silla.desasignarSilla()
+            return True
+        return False
+    
+    # 6. Contar ventanas económicas disponibles
+    def contarVentanasEconomica(self):
+        contador = 0
+        for i in range(8, len(self.__sillas)):
+            silla = self.__sillas[i]
+            if not silla.sillaAsignada() and silla.darUbicacion() == Silla.Ubicacion.VENTANA:
+                contador += 1
+        return contador
+    
+    # 7. Buscar homónimos en clase económica
+    def hayDosHomonimosEconomica(self):
+        nombres = []
+        for i in range(8, len(self.__sillas)):
+            silla = self.__sillas[i]
+            if silla.sillaAsignada():
+                nombre = silla.darPasajero().darNombre()
+                # Si el nombre ya está en la lista, hay homónimos
+                if nombre in nombres:
+                    return True
+                nombres.append(nombre)
+        return False
+    
+    #------------------------------------------
+    # Métodos de la Tarea casa 3
+    #------------------------------------------
+    
+    # 1. Contar sillas económicas libres
+    def contarSillasEconomicasLibres(self):
+        contador = 0
+        for i in range(8, len(self.__sillas)):
+            if not self.__sillas[i].sillaAsignada():
+                contador += 1
+        return contador
+    
+    # 2. Contar pasillos ejecutivos disponibles
+    def contarPasilloEjecutivas(self):
+        contador = 0
+        for i in range(8):
+            silla = self.__sillas[i]
+            if not silla.sillaAsignada() and silla.darUbicacion() == Silla.Ubicacion.PASILLO:
+                contador += 1
+        return contador
+    
+    # 3. Desocupar avión
+    def desocuparAvion(self):
+        for i in range(len(self.__sillas)):
+            self.__sillas[i].desasignarSilla()</code></pre>
+            </div>
+            
+            <div class="explanation-card">
+                <h3>Aspectos destacados</h3>
+                <ul>
+                    <li>La clase <code>Avión</code> gestiona la configuración física de las sillas del avión, definiendo sus posiciones y características</li>
+                    <li>El constructor inicializa la distribución del avión con 8 sillas ejecutivas y 42 económicas</li>
+                    <li>Implementa métodos específicos para contar, buscar y gestionar sillas según diferentes criterios</li>
+                    <li>Utiliza encapsulamiento para proteger el atributo <code>__sillas</code> y proporciona métodos para la interacción con ellas</li>
+                    <li>Los métodos se dividen en dos grupos: los del "Taller clase 2" y los de la "Tarea casa 3", mostrando una organización clara del código</li>
+                </ul>
+            </div>
+
+            <h3>Diagrama de Distribución de Sillas</h3>
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fas fa-plane-departure"></i>
+                    <h3>Disposición de las Sillas</h3>
+                </div>
+                <p>El avión tiene las siguientes configuraciones:</p>
+                <ul>
+                    <li><strong>Sillas ejecutivas (1-8):</strong> Distribuidas en 2 filas con 4 sillas cada una, alternando entre ventana y pasillo</li>
+                    <li><strong>Sillas económicas (9-50):</strong> Organizadas en 7 filas con 6 sillas por fila (ventana, centro y pasillo en ambos lados)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
         <section id="conclusion" class="section">
             <div class="container">
                     <div class="cta-container">
